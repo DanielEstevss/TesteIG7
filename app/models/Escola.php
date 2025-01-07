@@ -1,16 +1,16 @@
 <?php
 class Escola {
     
-    public function cadastrar($nome,$endereco) {
+    public function cadastrar($nome, $endereco, $status = 'ativo') {
         global $conn;
-        $stmt = $conn->prepare("INSERT INTO escolas (nome, endereco) VALUES (?, ?)");
-        return $stmt->execute([$nome, $endereco]);
+        $stmt = $conn->prepare("INSERT INTO escolas (nome, endereco, status) VALUES (?, ?, ?)");
+        return $stmt->execute([$nome, $endereco, $status]);
     }
 
-    public function editar($id, $nome, $endereco) {
+    public function editar($id, $nome, $endereco, $status) {
         global $conn;
-        $stmt = $conn->prepare("UPDATE escolas SET nome = ?, endereco = ? WHERE id = ?");
-        return $stmt->execute([$nome, $endereco, $id]);
+        $stmt = $conn->prepare("UPDATE escolas SET nome = ?, endereco = ?, status = ? WHERE id = ?");
+        return $stmt->execute([$nome, $endereco, $status, $id]);
     }
 
     public function excluir($id) {

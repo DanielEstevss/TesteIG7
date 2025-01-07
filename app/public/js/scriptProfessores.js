@@ -11,6 +11,7 @@ function listarProfessores() {
                 row.innerHTML = `
                     <td>${professor.id}</td>
                     <td>${professor.nome}</td>
+                    <td>${professor.id_turma || 'Nenhuma'}</td>
                     <td>
                         <button class="editar" onclick="editarProfessor(${professor.id})">Editar</button>
                         <button class="excluir" onclick="excluirProfessor(${professor.id})">Excluir</button>
@@ -29,8 +30,9 @@ document.getElementById('formCadastrarProfessor').addEventListener('submit', fun
     e.preventDefault();
 
     const nome = document.getElementById('nomeProfessor').value;
+    const id_turma = document.getElementById('idTurmaProfessor').value || null; // Pega o ID da turma
 
-    const data = { nome };
+    const data = { nome, id_turma };
 
     fetch('index.php?action=cadastrarProfessor', {
         method: 'POST',
@@ -40,11 +42,10 @@ document.getElementById('formCadastrarProfessor').addEventListener('submit', fun
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                alert('Professor cadastrado com sucesso!');
-                listarProfessores(); // Recarrega a lista de professores
-                document.getElementById('modalCadastrarProfessor').style.display = 'none'; // Fecha o modal
+                alert(result.message || 'Professor cadastrado com sucesso!');
+                listarProfessores();  
             } else {
-                alert('Erro ao cadastrar professor');
+                alert(result.message || 'Erro ao cadastrar professor');
             }
         })
         .catch(error => {
@@ -59,10 +60,10 @@ function excluirProfessor(id) {
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                alert('Professor excluído com sucesso!');
-                listarProfessores(); // Recarrega a lista de professores
+                alert(result.message || 'Professor excluído com sucesso!');
+                listarProfessores(); 
             } else {
-                alert('Erro ao excluir professor');
+                alert(result.message || 'Erro ao excluir professor');
             }
         })
         .catch(error => {
@@ -74,25 +75,27 @@ function excluirProfessor(id) {
 // Função para editar um professor
 function editarProfessor(id) {
     const nome = prompt("Digite o novo nome do professor:");
+    const id_turma = prompt("Digite o novo ID da turma ou deixe em branco para desvincular:");
 
-    if (nome) {
+    if (nome !== null) {
         fetch('index.php?action=editarProfessor', {
-            method: 'PUT',  // Usando PUT para editar
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 id: id,
-                nome: nome
+                nome: nome,
+                id_turma: id_turma || null // Se vazio, remove o vínculo
             })
         })
-        .then(response => response.json())  // Converte a resposta para JSON
+        .then(response => response.json())
         .then(result => {
             if (result.success) {
-                alert('Professor editado com sucesso!');
-                listarProfessores(); // Recarrega a lista de professores
+                alert(result.message || 'Professor editado com sucesso!');
+                listarProfessores();
             } else {
-                alert('Erro ao editar professor');
+                alert(result.message || 'Erro ao editar professor');
             }
         })
         .catch(error => {

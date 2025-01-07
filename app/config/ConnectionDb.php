@@ -3,8 +3,8 @@
 class Database {
     private $host = 'localhost';
     private $db_name = 'gestao_escolar';
-    private $username = 'root';  // ou outro usuário
-    private $password = '';      // ou a senha correspondente
+    private $username = 'root';  
+    private $password = '';      
     public $conn;
 
     public function getConnection() {

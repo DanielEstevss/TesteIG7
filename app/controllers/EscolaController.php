@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Escola.php';
-require_once __DIR__ . '/../config/ConnectionDb.php'; // Importar a classe de conexão
+require_once __DIR__ . '/../config/ConnectionDb.php'; 
 
 class EscolaController {
 
@@ -16,19 +16,19 @@ class EscolaController {
         return $escola->listar($this->conn);  // Passar a conexão ao método
     }
 
-    public function cadastrar($nome, $endereco) {
+    public function cadastrar($nome, $endereco, $status = 'ativo') {
         $escola = new Escola();
-        return $escola->cadastrar($nome, $endereco, $this->conn);  // Passar a conexão
+        return $escola->cadastrar($nome, $endereco, $status, $this->conn);  
     }
 
-    public function editar($id, $nome, $endereco) {
+    public function editar($id, $nome, $endereco, $status) {
         $escola = new Escola();
-        return $escola->editar($id, $nome, $endereco, $this->conn);  // Passar a conexão
+        return $escola->editar($id, $nome, $endereco, $status, $this->conn);  
     }
 
     public function excluir($id) {
         $escola = new Escola();
-        return $escola->excluir($id, $this->conn);  // Passar a conexão
+        return $escola->excluir($id, $this->conn);  
     }   
 }
 ?>

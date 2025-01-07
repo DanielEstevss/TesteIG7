@@ -4,17 +4,19 @@ class Professor {
     private $conn;
 
     public function __construct($database) {
-        $this->conn = $database;  // Atribui a conexão ao atributo da classe
+        $this->conn = $database;
     }
 
-    public function cadastrar($nome) {
-        $stmt = $this->conn->prepare("INSERT INTO professores (nome) VALUES (?)");
-        return $stmt->execute([$nome]);
+    public function cadastrar($nome, $id_turma = null) {
+        // Adiciona o campo id_turma ao cadastro do professor
+        $stmt = $this->conn->prepare("INSERT INTO professores (nome, id_turma) VALUES (?, ?)");
+        return $stmt->execute([$nome, $id_turma]);
     }
 
-    public function editar($id, $nome) {
-        $stmt = $this->conn->prepare("UPDATE professores SET nome = ? WHERE id = ?");
-        return $stmt->execute([$nome, $id]);
+    public function editar($id, $nome, $id_turma = null) {
+        // Atualiza o nome e o id_turma de um professor
+        $stmt = $this->conn->prepare("UPDATE professores SET nome = ?, id_turma = ? WHERE id = ?");
+        return $stmt->execute([$nome, $id_turma, $id]);
     }
 
     public function excluir($id) {
@@ -23,7 +25,7 @@ class Professor {
     }
 
     public function listar() {
-        $stmt = $this->conn->prepare("SELECT * FROM professores");
+        $stmt = $this->conn->prepare("SELECT professores.*, turmas.nome AS nome_turma FROM professores LEFT JOIN turmas ON professores.id_turma = turmas.id");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

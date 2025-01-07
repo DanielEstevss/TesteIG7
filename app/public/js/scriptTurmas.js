@@ -1,27 +1,30 @@
 // Função para listar as turmas
-fetch('index.php?action=listarTurmas')
-    .then(response => response.json())
-    .then(data => {
-        const turmasTable = document.getElementById('turmasTable').getElementsByTagName('tbody')[0];
-        turmasTable.innerHTML = ''; // Limpa a tabela
-        data.forEach(turma => {
-            const row = turmasTable.insertRow();
-            row.innerHTML = `
-                <td>${turma.id}</td>
-                <td>${turma.nome}</td>
-                <td>${turma.turno}</td>
-                <td>${turma.id_escola}</td>
-                <td>
-                    <button class="editar" onclick="editarTurma(${turma.id})">Editar</button>
-                    <button class="excluir" onclick="excluirTurma(${turma.id})">Excluir</button>
-                </td>
-            `;
+function listarTurmas() {
+    fetch('index.php?action=listarTurmas')
+        .then(response => response.json())
+        .then(data => {
+            const turmasTable = document.getElementById('turmasTable').getElementsByTagName('tbody')[0];
+            turmasTable.innerHTML = ''; // Limpa a tabela
+            data.forEach(turma => {
+                const row = turmasTable.insertRow();
+                row.innerHTML = `
+                    <td>${turma.id}</td>
+                    <td>${turma.nome}</td>
+                    <td>${turma.turno}</td>
+                    <td>${turma.id_escola}</td>
+                    <td>${turma.status}</td>
+                    <td>
+                        <button class="editar" onclick="editarTurma(${turma.id})">Editar</button>
+                        <button class="excluir" onclick="excluirTurma(${turma.id})">Excluir</button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao listar as turmas:', error);
+            alert('Erro ao carregar as turmas');
         });
-    })
-    .catch(error => {
-        console.error('Erro ao listar as turmas:', error);
-        alert('Erro ao carregar as turmas');
-    });
+}
 
 // Função para cadastrar uma nova turma
 document.getElementById('formCadastrarTurma').addEventListener('submit', function (e) {
@@ -30,8 +33,9 @@ document.getElementById('formCadastrarTurma').addEventListener('submit', functio
     const nome = document.getElementById('nomeTurma').value;
     const turno = document.getElementById('turnoTurma').value;
     const id_escola = document.getElementById('idEscolaTurma').value;
+    const status = document.getElementById('statusTurma').value;
 
-    const data = { nome, turno, id_escola };
+    const data = { nome, turno, id_escola, status };
 
     fetch('index.php?action=cadastrarTurma', {
         method: 'POST',
@@ -42,11 +46,14 @@ document.getElementById('formCadastrarTurma').addEventListener('submit', functio
     .then(result => {
         if (result.success) {
             alert('Turma cadastrada com sucesso!');
-            listarTurmas(); // Recarrega a lista de turmas
-            document.getElementById('modalCadastrarTurma').style.display = 'none'; // Fecha o modal
+            listarTurmas(); 
         } else {
             alert('Erro ao cadastrar turma');
         }
+    })
+    .catch(error => {
+        console.error('Erro ao cadastrar turma:', error);
+        alert('Erro ao cadastrar turma');
     });
 });
 
@@ -57,10 +64,14 @@ function excluirTurma(id) {
         .then(result => {
             if (result.success) {
                 alert('Turma excluída com sucesso!');
-                listarTurmas(); // Recarrega a lista de turmas
+                listarTurmas(); 
             } else {
                 alert('Erro ao excluir turma');
             }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir turma:', error);
+            alert('Erro ao excluir turma');
         });
 }
 
@@ -69,10 +80,11 @@ function editarTurma(id) {
     const nome = prompt("Digite o novo nome da turma:");
     const turno = prompt("Digite o novo turno da turma:");
     const id_escola = prompt("Digite o ID da nova escola:");
+    const status = prompt("Digite o novo status da turma:");
 
-    if (nome && turno && id_escola) {
+    if (nome && turno && id_escola && status) {
         fetch('index.php?action=editarTurma', {
-            method: 'PUT',  // Usando PUT para editar
+            method: 'PUT',  
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -80,14 +92,15 @@ function editarTurma(id) {
                 id: id,
                 nome: nome,
                 turno: turno,
-                id_escola: id_escola
+                id_escola: id_escola,
+                status: status
             })
         })
         .then(response => response.json())  // Converte a resposta para JSON
         .then(result => {
             if (result.success) {
                 alert('Turma editada com sucesso!');
-                listarTurmas(); // Recarrega a lista de turmas
+                listarTurmas(); 
             } else {
                 alert('Erro ao editar turma');
             }
@@ -96,7 +109,7 @@ function editarTurma(id) {
             console.error('Erro ao editar a turma:', error);
         });
     } else {
-        alert('Nome, turno ou ID da escola não informado.');
+        alert('Nome, turno, ID da escola ou status não informado.');
     }
 }
 

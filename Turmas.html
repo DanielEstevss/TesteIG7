@@ -17,8 +17,17 @@
         <h2>Cadastrar Turma</h2>
         <form id="formCadastrarTurma">
             <input type="text" id="nomeTurma" placeholder="Nome da Turma" required />
+
             <input type="text" id="turnoTurma" placeholder="Turno da Turma" required />
+
             <input type="number" id="idEscolaTurma" placeholder="ID da Escola" required />
+
+            <label for="statusTurma">Status:</label>
+            <select id="statusTurma" name="statusTurma">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+            </select>
+
             <button type="submit">Cadastrar</button>
         </form>
     </section>
@@ -32,11 +41,12 @@
                     <th>Nome</th>
                     <th>Turno</th>
                     <th>Id Escola</th>
+                    <th>Status</th> 
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- As turmas serão listadas aqui -->
+                
             </tbody>
         </table>
     </section>

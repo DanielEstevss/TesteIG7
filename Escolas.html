@@ -16,6 +16,13 @@
         <form id="formCadastrarEscola">
             <input type="text" id="nomeEscola" placeholder="Nome da Escola" required />
             <input type="text" id="enderecoEscola" placeholder="Endereço da Escola" required />
+
+            <label for="statusEscola">Status:</label>
+            <select id="statusEscola" name="statusEscola">
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+            </select>
+
             <button type="submit">Cadastrar</button>
         </form>
     </div>
@@ -27,13 +34,19 @@
                 <th>ID</th>
                 <th>Nome</th>
                 <th>Endereço</th>
+                <th>Status</th>
                 <th>Ações</th>
             </tr>
         </thead>
         <tbody>
-            <!-- As escolas serão listadas aqui -->
+
         </tbody>
     </table>
+
+    <!-- Modal para Cadastro de Escola -->
+    <div id="modalCadastrarEscola" style="display:none;">
+        
+    </div>
 
     <script src="app/public/js/scriptEscolas.js"></script>
 

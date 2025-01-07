@@ -10,23 +10,27 @@ class TurmaController {
         $this->conn = $conn;
     }
 
+    // Método para listar as turmas
     public function listar() {
-        $turma = new Turma($this->conn);  // Passa a conexão para o modelo 
+        $turma = new Turma($this->conn);  
         return $turma->listar();
     }
 
-    public function cadastrar($id_escola, $nome, $turno) {
-        $turma = new Turma($this->conn);  // Passa a conexão para o modelo
-        return $turma->cadastrar($id_escola, $nome, $turno);
+    // Método para cadastrar uma turma
+    public function cadastrar($id_escola, $nome, $turno, $status) {
+        $turma = new Turma($this->conn); 
+        return $turma->cadastrar($id_escola, $nome, $turno, $status);
     }
 
-    public function editar($id, $id_escola, $nome, $turno) {
-        $turma = new Turma($this->conn);  // Passa a conexão para o modelo
-        return $turma->editar($id, $id_escola, $nome, $turno);
+    // Método para editar uma turma
+    public function editar($id, $id_escola, $nome, $turno, $status) {
+        $turma = new Turma($this->conn);  
+        return $turma->editar($id, $id_escola, $nome, $turno, $status);
     }
 
+    // Método para excluir uma turma
     public function excluir($id) {
-        $turma = new Turma($this->conn);  // Passa a conexão para o modelo
+        $turma = new Turma($this->conn);  
         return $turma->excluir($id);
     }
 }

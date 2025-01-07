@@ -1,25 +1,29 @@
-fetch('index.php?action=listarEscolas')
-    .then(response => response.json())
-    .then(data => {
-        const escolasTable = document.getElementById('escolasTable').getElementsByTagName('tbody')[0];
-        escolasTable.innerHTML = ''; // Limpa a tabela
-        data.forEach(escola => {
-            const row = escolasTable.insertRow();
-            row.innerHTML = `
-                <td>${escola.id}</td>
-                <td>${escola.nome}</td>
-                <td>${escola.endereco}</td>
-                <td>
-                    <button class="editar" onclick="editarEscola(${escola.id})">Editar</button>
-                    <button class="excluir" onclick="excluirEscola(${escola.id})">Excluir</button>
-                </td>
-            `;
+// Função para listar as escolas
+function listarEscolas() {
+    fetch('index.php?action=listarEscolas') 
+        .then(response => response.json())
+        .then(data => {
+            const escolasTable = document.getElementById('escolasTable').getElementsByTagName('tbody')[0];
+            escolasTable.innerHTML = ''; // Limpa a tabela
+            data.forEach(escola => {
+                const row = escolasTable.insertRow();
+                row.innerHTML = `
+                    <td>${escola.id}</td>
+                    <td>${escola.nome}</td>
+                    <td>${escola.endereco}</td>
+                    <td>${escola.status}</td>
+                    <td>
+                        <button class="editar" onclick="editarEscola(${escola.id})">Editar</button>
+                        <button class="excluir" onclick="excluirEscola(${escola.id})">Excluir</button>
+                    </td>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error('Erro ao listar as escolas:', error);
+            alert('Erro ao carregar as escolas');
         });
-    })
-    .catch(error => {
-        console.error('Erro ao listar as escolas:', error);
-        alert('Erro ao carregar as escolas');
-    });
+}
 
 // Função para cadastrar uma nova escola
 document.getElementById('formCadastrarEscola').addEventListener('submit', function (e) {
@@ -28,7 +32,7 @@ document.getElementById('formCadastrarEscola').addEventListener('submit', functi
     const nome = document.getElementById('nomeEscola').value;
     const endereco = document.getElementById('enderecoEscola').value;
 
-    const data = { nome, endereco};
+    const data = { nome, endereco };
 
     fetch('index.php?action=cadastrarEscola', {
         method: 'POST',
@@ -40,10 +44,13 @@ document.getElementById('formCadastrarEscola').addEventListener('submit', functi
             if (result.success) {
                 alert('Escola cadastrada com sucesso!');
                 listarEscolas(); // Recarrega a lista de escolas
-                document.getElementById('modalCadastrarEscola').style.display = 'none'; // Fecha o modal
+                document.getElementById('modalCadastrarEscola').style.display = 'none';
             } else {
                 alert('Erro ao cadastrar escola');
             }
+        })
+        .catch(error => {
+            console.error('Erro ao cadastrar a escola:', error);
         });
 });
 
@@ -54,35 +61,39 @@ function excluirEscola(id) {
         .then(result => {
             if (result.success) {
                 alert('Escola excluída com sucesso!');
-                listarEscolas(); // Recarrega a lista de escolas
+                listarEscolas();
             } else {
                 alert('Erro ao excluir escola');
             }
+        })
+        .catch(error => {
+            console.error('Erro ao excluir a escola:', error);
         });
 }
 
-// Função para editar uma escola
 function editarEscola(id) {
     const nome = prompt("Digite o novo nome da escola:");
     const endereco = prompt("Digite o novo endereço da escola:");
+    const status = prompt("Digite o novo status da escola (ativo/inativo):");
 
-    if (nome && endereco) {
+    if (nome && endereco && status) {
         fetch('index.php?action=editarEscola', {
-            method: 'PUT',  // Usando PUT para editar
+            method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
                 id: id,
                 nome: nome,
-                endereco: endereco
+                endereco: endereco,
+                status: status  // Agora estamos enviando o status
             })
         })
-        .then(response => response.json())  // Converte a resposta para JSON
+        .then(response => response.json())
         .then(result => {
             if (result.success) {
                 alert('Escola editada com sucesso!');
-                listarEscolas(); // Recarrega a lista de escolas
+                listarEscolas(); 
             } else {
                 alert('Erro ao editar escola');
             }
@@ -91,7 +102,7 @@ function editarEscola(id) {
             console.error('Erro ao editar a escola:', error);
         });
     } else {
-        alert('Nome ou endereço não informado.');
+        alert('Nome, endereço ou status não informados.');
     }
 }
 
