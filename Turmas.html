@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Turmas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-7uGdqJ1zzB4vHC+r0A7h5fi3Jt8s4UjJ8+Tz4gqhhFV6L9tT6U5tT+IRLFG9M+r3m" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Gerenciar Turmas</h1>
+
+        <!-- Botão de Cadastrar Turma -->
+        <button class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#modalCadastrarTurma">Cadastrar Turma</button>
+
+        <!-- Tabela de Turmas -->
+        <table class="table table-bordered" id="turmasTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Escola</th>
+                    <th>Turno</th>
+                    <th>Nome</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Dados serão inseridos via JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal de Cadastro de Turma -->
+    <div class="modal fade" id="modalCadastrarTurma" tabindex="-1" aria-labelledby="modalCadastrarTurmaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCadastrarTurmaLabel">Cadastrar Turma</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formCadastrarTurma">
+                        <div class="mb-3">
+                            <label for="escolaTurma" class="form-label">Escola</label>
+                            <select class="form-select" id="escolaTurma" required>
+                                <!-- Dados das escolas serão carregados via JavaScript -->
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nomeTurma" class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="nomeTurma" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="turnoTurma" class="form-label">Turno</label>
+                            <select class="form-select" id="turnoTurma" required>
+                                <option value="Manhã">Manhã</option>
+                                <option value="Tarde">Tarde</option>
+                                <option value="Noite">Noite</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/scriptTurmas.js"></script>
+</body>
+</html>

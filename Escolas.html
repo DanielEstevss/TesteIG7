@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Escolas</title>
+    <!-- Link para o arquivo CSS externo -->
+    <link rel="stylesheet" href="css/Style.css">
+</head>
+<body>
+
+    <h1>Gerenciamento de Escolas</h1>
+
+    <!-- Formulário de Cadastro -->
+    <div id="formCadastrarEscola">
+        <h2>Cadastrar Escola</h2>
+        <form id="formCadastrarEscola">
+            <input type="text" id="nomeEscola" placeholder="Nome da Escola" required />
+            <input type="text" id="enderecoEscola" placeholder="Endereço da Escola" required />
+            <button type="submit">Cadastrar</button>
+        </form>
+    </div>
+
+    <!-- Tabela de Escolas -->
+    <table id="escolasTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- As escolas serão listadas aqui -->
+        </tbody>
+    </table>
+
+    <script src="scriptEscolas.js"></script>
+
+</body>
+</html>

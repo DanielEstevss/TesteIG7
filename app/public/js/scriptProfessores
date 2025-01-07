@@ -1,0 +1,68 @@
+function listarProfessores() {
+    fetch('/api/getProfessores.php')
+        .then(response => response.json())
+        .then(data => {
+            const professoresTable = document.getElementById('professoresTable').getElementsByTagName('tbody')[0];
+            professoresTable.innerHTML = ''; // Limpa a tabela
+            data.forEach(professor => {
+                const row = professoresTable.insertRow();
+                row.innerHTML = `
+                    <td>${professor.id}</td>
+                    <td>${professor.nome}</td>
+                    <td>
+                        <button class="btn btn-warning" onclick="editarProfessor(${professor.id})">Editar</button>
+                        <button class="btn btn-danger" onclick="excluirProfessor(${professor.id})">Excluir</button>
+                    </td>
+                `;
+            });
+        });
+}
+
+// Função para cadastrar um novo professor
+document.getElementById('formCadastrarProfessor').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const nome = document.getElementById('nomeProfessor').value;
+
+    const data = { nome };
+
+    fetch('/api/cadastrarProfessor.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Professor cadastrado com sucesso!');
+                listarProfessores(); // Recarrega a lista de professores
+                $('#modalCadastrarProfessor').modal('hide'); // Fecha o modal
+            } else {
+                alert('Erro ao cadastrar professor');
+            }
+        });
+});
+
+// Função para excluir um professor
+function excluirProfessor(id) {
+    fetch(`/api/excluirProfessor.php?id=${id}`, { method: 'DELETE' })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Professor excluído com sucesso!');
+                listarProfessores(); // Recarrega a lista de professores
+            } else {
+                alert('Erro ao excluir professor');
+            }
+        });
+}
+
+// Função para editar um professor
+function editarProfessor(id) {
+    // Implementar a lógica para editar professor
+}
+
+// Carrega a lista de professores ao iniciar a página
+window.onload = function () {
+    listarProfessores();
+};
