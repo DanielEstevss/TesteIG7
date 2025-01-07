@@ -1,6 +1,6 @@
 <?php
 class Escola {
-
+    
     public function cadastrar($nome,$endereco) {
         global $conn;
         $stmt = $conn->prepare("INSERT INTO escolas (nome, endereco) VALUES (?, ?)");

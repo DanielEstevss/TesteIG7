@@ -3,19 +3,25 @@ require_once 'app/controllers/EscolaController.php';
 require_once 'app/controllers/ProfessorController.php';
 require_once 'app/controllers/TurmaController.php';
 require_once 'app/controllers/VinculoController.php';
+require_once 'app/config/ConnectionDb.php';
 
-// Instancia os controladores
-$escolaController = new EscolaController();
-$professorController = new ProfessorController();
-$turmaController = new TurmaController();
-$vinculoController = new VinculoController();
+// Cria a instância da classe Database para obter a conexão
+$database = new Database();
+$conn = $database->getConnection();  // Obtenha a conexão
+
+// Instancia os controladores e passa a conexão para eles
+$escolaController = new EscolaController($conn);
+$professorController = new ProfessorController($conn);
+$turmaController = new TurmaController($conn);
+$vinculoController = new VinculoController($conn);
+
+$action = $_GET['action'] ?? null;
 
 // Detecta o método HTTP
 $method = $_SERVER['REQUEST_METHOD'];
-$action = $_GET['action'] ?? null;
 
+// Se não houver ação, exibe a interface HTML
 if ($method == 'GET' && !$action) {
-    // Exibe a interface HTML
     include 'index.html';  // Exibe o arquivo HTML da interface
     exit;  // Garante que o código abaixo não seja executado
 }
@@ -178,31 +184,11 @@ elseif ($action === 'desvincular' && $method === 'DELETE') {
 
     if ($id_professor && $id_turma) {
         $result = $vinculoController->desvincular($id_professor, $id_turma);
-        echo json_encode(['success' => $result, 'message' => $result ? 'Desvinculação realizada com sucesso!' : 'Erro ao desvincular professor da turma!']);
+        echo json_encode(['success' => $result, 'message' => $result ? 'Desvinculação realizada com sucesso!' : 'Erro ao desvincular professor de turma!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Dados insuficientes para desvinculação!']);
     }
-}
-
-// Ação para listar professores por turma
-elseif ($action === 'listarProfessoresPorTurma' && $method === 'GET') {
-    $id_turma = $_GET['id_turma'] ?? null;
-    if ($id_turma) {
-        echo json_encode($vinculoController->listarProfessoresPorTurma($id_turma));
-    } else {
-        echo json_encode(['success' => false, 'message' => 'ID da turma não fornecido!']);
-    }
-}
-
-// Ação para listar turmas por professor
-elseif ($action === 'listarTurmasPorProfessor' && $method === 'GET') {
-    $id_professor = $_GET['id_professor'] ?? null;
-    if ($id_professor) {
-        echo json_encode($vinculoController->listarTurmasPorProfessor($id_professor));
-    } else {
-        echo json_encode(['success' => false, 'message' => 'ID do professor não fornecido!']);
-    }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Ação não reconhecida ou método HTTP inválido!']);
+    echo json_encode(['success' => false, 'message' => 'Ação não encontrada ou método HTTP incorreto!']);
 }
 ?>

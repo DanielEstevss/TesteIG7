@@ -1,23 +1,25 @@
-function listarEscolas() {
-    fetch('index.php?action=listarEscolas')
-        .then(response => response.json())
-        .then(data => {
-            const escolasTable = document.getElementById('escolasTable').getElementsByTagName('tbody')[0];
-            escolasTable.innerHTML = ''; // Limpa a tabela
-            data.forEach(escola => {
-                const row = escolasTable.insertRow();
-                row.innerHTML = `
-                    <td>${escola.id}</td>
-                    <td>${escola.nome}</td>
-                    <td>${escola.endereco}</td>
-                    <td>
-                        <button class="editar" onclick="editarEscola(${escola.id})">Editar</button>
-                        <button class="excluir" onclick="excluirEscola(${escola.id})">Excluir</button>
-                    </td>
-                `;
-            });
+fetch('index.php?action=listarEscolas')
+    .then(response => response.json())
+    .then(data => {
+        const escolasTable = document.getElementById('escolasTable').getElementsByTagName('tbody')[0];
+        escolasTable.innerHTML = ''; // Limpa a tabela
+        data.forEach(escola => {
+            const row = escolasTable.insertRow();
+            row.innerHTML = `
+                <td>${escola.id}</td>
+                <td>${escola.nome}</td>
+                <td>${escola.endereco}</td>
+                <td>
+                    <button class="editar" onclick="editarEscola(${escola.id})">Editar</button>
+                    <button class="excluir" onclick="excluirEscola(${escola.id})">Excluir</button>
+                </td>
+            `;
         });
-}
+    })
+    .catch(error => {
+        console.error('Erro ao listar as escolas:', error);
+        alert('Erro ao carregar as escolas');
+    });
 
 // Função para cadastrar uma nova escola
 document.getElementById('formCadastrarEscola').addEventListener('submit', function (e) {
