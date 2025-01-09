@@ -6,9 +6,9 @@ require_once 'app/config/ConnectionDb.php';
 
 // Cria a instância da classe Database para obter a conexão
 $database = new Database();
-$conn = $database->getConnection();  // Obtenha a conexão
+$conn = $database->getConnection();  
 
-// Instancia os controladores e passa a conexão para eles
+// Instância dos controladores com a conexão passada para eles
 $escolaController = new EscolaController($conn);
 $professorController = new ProfessorController($conn);
 $turmaController = new TurmaController($conn);
@@ -18,10 +18,10 @@ $action = $_GET['action'] ?? null;
 // Detecta o método HTTP
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Se não houver ação, exibe a interface HTML
+// Exibe a interface HTML
 if ($method == 'GET' && !$action) {
-    include 'index.html';  // Exibe o arquivo HTML da interface
-    exit;  // Garante que o código abaixo não seja executado
+    include 'index.html';  
+    exit;  
 }
 
 header('Content-Type: application/json');
@@ -36,7 +36,7 @@ elseif ($action === 'cadastrarEscola' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $nome = $data['nome'] ?? null;
     $endereco = $data['endereco'] ?? null;
-    $status = $data['status'] ?? 'ativo';  // Obtém o status (padrão 'ativo')
+    $status = $data['status'] ?? 'ativo';  // Obtém o status da escola (padrão 'ativo')
 
     if ($nome && $endereco) {
         $result = $escolaController->cadastrar($nome, $endereco, $status);
@@ -52,7 +52,7 @@ elseif ($action === 'editarEscola' && $method === 'PUT') {
     $id = $data['id'] ?? null;
     $nome = $data['nome'] ?? null;
     $endereco = $data['endereco'] ?? null;
-    $status = $data['status'] ?? null;  // Obtém o status
+    $status = $data['status'] ?? null;  // Obtém o status da escola 
 
     if ($id && $nome && $endereco && $status) {
         $result = $escolaController->editar($id, $nome, $endereco, $status);
@@ -82,10 +82,10 @@ elseif ($action === 'listarProfessores' && $method === 'GET') {
 elseif ($action === 'cadastrarProfessor' && $method === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     $nome = $data['nome'] ?? null;
-    $id_turma = $data['id_turma'] ?? null;  // Novo campo para id_turma
+    $id_turma = $data['id_turma'] ?? null;  
 
     if ($nome) {
-        $result = $professorController->cadastrar($nome, $id_turma);  // Passa id_turma para o controlador
+        $result = $professorController->cadastrar($nome, $id_turma);  
         echo json_encode(['success' => $result, 'message' => $result ? 'Professor cadastrado com sucesso!' : 'Erro ao cadastrar professor!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Nome do professor não fornecido!']);
@@ -97,10 +97,10 @@ elseif ($action === 'editarProfessor' && $method === 'PUT') {
     $data = json_decode(file_get_contents('php://input'), true);
     $id = $data['id'] ?? null;
     $nome = $data['nome'] ?? null;
-    $id_turma = $data['id_turma'] ?? null;  // Novo campo para id_turma
+    $id_turma = $data['id_turma'] ?? null;  
 
     if ($id && $nome) {
-        $result = $professorController->editar($id, $nome, $id_turma);  // Passa id_turma para o controlador
+        $result = $professorController->editar($id, $nome, $id_turma);  
         echo json_encode(['success' => $result, 'message' => $result ? 'Professor editado com sucesso!' : 'Erro ao editar professor!']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Dados insuficientes para editar professor!']);
@@ -129,9 +129,9 @@ elseif ($action === 'cadastrarTurma' && $method === 'POST') {
     $id_escola = $data['id_escola'] ?? null;
     $nome = $data['nome'] ?? null;
     $turno = $data['turno'] ?? null;
-    $status = $data['status'] ?? 'ativo';  // Obtém o status (padrão 'ativo')
+    $status = $data['status'] ?? 'ativo';  // Obtém o status da turma (padrão 'ativo')
 
-    if ($id_escola && $nome && $turno) {  // Removido 'id_professor' do parâmetro
+    if ($id_escola && $nome && $turno) {  
         $result = $turmaController->cadastrar($id_escola, $nome, $turno, $status);
         echo json_encode(['success' => $result, 'message' => $result ? 'Turma cadastrada com sucesso!' : 'Erro ao cadastrar turma!']);
     } else {
@@ -148,7 +148,7 @@ elseif ($action === 'editarTurma' && $method === 'PUT') {
     $turno = $data['turno'] ?? null;
     $status = $data['status'] ?? null;  // Obtém o status
 
-    if ($id && $id_escola && $nome && $turno && $status) {  // Removido 'id_professor' do parâmetro
+    if ($id && $id_escola && $nome && $turno && $status) {  
         $result = $turmaController->editar($id, $id_escola, $nome, $turno, $status);
         echo json_encode(['success' => $result, 'message' => $result ? 'Turma editada com sucesso!' : 'Erro ao editar turma!']);
     } else {
