@@ -86,7 +86,7 @@ function editarEscola(id) {
                 id: id,
                 nome: nome,
                 endereco: endereco,
-                status: status  // Agora estamos enviando o status
+                status: status  
             })
         })
         .then(response => response.json())
