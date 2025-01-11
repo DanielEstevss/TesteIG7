@@ -96,7 +96,7 @@ function editarTurma(id) {
                 status: status
             })
         })
-        .then(response => response.json())  // Converte a resposta para JSON
+        .then(response => response.json())  
         .then(result => {
             if (result.success) {
                 alert('Turma editada com sucesso!');
