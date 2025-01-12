@@ -8,13 +8,11 @@ class Professor {
     }
 
     public function cadastrar($nome, $id_turma = null) {
-        
         $stmt = $this->conn->prepare("INSERT INTO professores (nome, id_turma) VALUES (?, ?)");
         return $stmt->execute([$nome, $id_turma]);
     }
 
-    public function editar($id, $nome, $id_turma = null) {
-        
+    public function editar($id, $nome, $id_turma = null) { 
         $stmt = $this->conn->prepare("UPDATE professores SET nome = ?, id_turma = ? WHERE id = ?");
         return $stmt->execute([$nome, $id_turma, $id]);
     }
