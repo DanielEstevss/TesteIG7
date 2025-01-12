@@ -30,7 +30,7 @@ document.getElementById('formCadastrarProfessor').addEventListener('submit', fun
     e.preventDefault();
 
     const nome = document.getElementById('nomeProfessor').value;
-    const id_turma = document.getElementById('idTurmaProfessor').value || null; // Pega o ID da turma
+    const id_turma = document.getElementById('idTurmaProfessor').value || null; 
 
     const data = { nome, id_turma };
 
